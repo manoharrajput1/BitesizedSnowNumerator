@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<a class="btn btn-inline-dark" href="{% url 'index' %}"> Home</a>
+<div class="container-fluid mt-2">
+
+    {% for i in product %}
+    <div class="row">
+        <div class="col-3 justify-center text-center">
+            <img class='image' src='{{i.imageUrl}}' alt="">
+        </div>
+        <div class="col-9 justify-center">
+            <h5>{{i.name}}</h5>
+            <div>
+                {% if i.quantity > 0 %}
+                <button class="btn text-light fs-6" 
+                    hx-post="/update_item/" 
+                    hx-vals='{"productId": {{prod.id}}, "action": "add" }'
+                    hx-trigger="click" 
+                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                    hx-swap="none"
+                    HX-Refresh="ture"> Add To Cart </button>
+                {% else %}
+                <button class="btn text-light"> Out of stock </button>
+                {% endif %}
+                <p> <b>Price: </b> {{i.price}}</p>
+                <p> <b>Description :</b> {{i.desc}}</p>
+                <p> <b>Processor: </b> {{i.processor}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="container">
+    <h6>Similar Products</h6>
+    <div class="row ">
+        {% for i in prodl %}
+        <div class="col-3 text-center border rounded-3">
+            <h5>{{i.name|slice:15}}..</h5>
+            <div class="justify-center">
+                <img class='image' src='{{i.imageUrl}}' alt="">
+            </div>
+            <div class="d-inline-flex bg-secondary rounded">
+                <button class="btn text-light fs-6" 
+                    hx-post="/update_item/" 
+                    hx-vals='{"productId": {{prod.id}}, "action": "add" }'
+                    hx-trigger="click" 
+                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                    hx-swap="none"
+                    HX-Refresh="ture"> Add To Cart </button>
+                <a href="{% url 'prodView' i.id %}" class="btn text-light me-2">View</a>
+                <span class="text-light mt-2 me-2"> ₹{{i.price}}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
