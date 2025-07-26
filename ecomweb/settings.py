@@ -2,6 +2,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 SECRET_KEY = 'django-insecure-enb93(zh_g(2lvq7=kx#2n4nrexkk7hlag_%=x-2_(580ds0g+'
 
@@ -53,13 +55,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecomweb.wsgi.application'
 
 # DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.getenv("MYSQL_DB"),
+        'USER': os.getenv("MYSQL_USER"),
+        'PASSWORD': os.getenv("MYSQL_PASSWORD"),
+        'HOST': 'db',
         'PORT': '3306',
     }
 }
